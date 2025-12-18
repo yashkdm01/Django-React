@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block title %}Delete Employee{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-6 col-md-8">
+        <div class="card card-minimal border-danger">
+            <div class="card-body">
+                <h2 class="mb-3 text-danger">Delete Employee</h2>
+                <p>
+                    You are about to delete the employee
+                    <strong>{{ employee.first_name }} {{ employee.last_name }}</strong>
+                    (username: <strong>{{ employee.username }}</strong>).
+                </p>
+                <p class="text-muted">
+                    This action will remove the record from the active list. Continue only if you are sure.
+                </p>
+
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="d-flex justify-content-between mt-4">
+                        <a href="{% url 'employee_list' %}" class="btn btn-outline-secondary btn-pill">
+                            Cancel
+                        </a>
+                        <button type="submit" class="btn btn-danger btn-pill">
+                            Yes, Delete
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

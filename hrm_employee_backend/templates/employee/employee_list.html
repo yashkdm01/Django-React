@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+
+{% block title %}Employee Dashboard{% endblock %}
+
+{% block content %}
+<div class="row mb-3">
+    <div class="col-md-8">
+        <h2 class="mb-1">Employee Dashboard</h2>
+        <p class="text-muted mb-0">
+            View, update, or delete employee records from a single place.
+        </p>
+    </div>
+    <div class="col-md-4 text-md-end mt-3 mt-md-0">
+        <a href="{% url 'employee_create' %}" class="btn btn-primary btn-pill">
+            + Add Employee
+        </a>
+    </div>
+</div>
+
+<div class="card card-minimal">
+    <div class="card-body p-0">
+        {% if employees %}
+            <div class="table-responsive">
+                <table class="table mb-0 align-middle">
+                    <thead class="table-light">
+                    <tr>
+                        <th>#</th>
+                        <th>Employee</th>
+                        <th>Username</th>
+                        <th>Role ID</th>
+                        <th>Department ID</th>
+                        <th>Date of Joining</th>
+                        <th class="text-end">Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for emp in employees %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td>{{ emp.first_name }} {{ emp.last_name }}</td>
+                            <td>{{ emp.username }}</td>
+                            <td>{{ emp.role_id }}</td>
+                            <td>{{ emp.dept_id }}</td>
+                            <td>{{ emp.date_of_joining|date:"d-m-Y" }}</td>
+                            <td class="text-end">
+                                <a href="{% url 'employee_update' emp.pk %}"
+                                   class="btn btn-sm btn-outline-secondary btn-pill">
+                                    Edit
+                                </a>
+                                <a href="{% url 'employee_delete' emp.pk %}"
+                                   class="btn btn-sm btn-outline-danger btn-pill">
+                                    Delete
+                                </a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% else %}
+            <div class="p-4 text-center text-muted">
+                No employees found. Click <strong>Add Employee</strong> to create the first record.
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

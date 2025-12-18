@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-7 col-md-9">
+        <div class="card card-minimal">
+            <div class="card-body">
+                <h2 class="mb-3">{{ title }}</h2>
+                <p class="text-muted">
+                    Fill in the details below to {{ title|lower }} in the HRM system.
+                </p>
+
+                <form method="post" novalidate>
+                    {% csrf_token %}
+                    <div class="row g-3">
+                        <!-- Render fields with Bootstrap-like classes -->
+                        {% for field in form %}
+                        <div class="col-md-6">
+                            <label class="form-label">{{ field.label }}</label>
+                            {{ field }}
+                            {% if field.errors %}
+                            <div class="text-danger small">
+                                {{ field.errors|striptags }}
+                            </div>
+                            {% endif %}
+                        </div>
+                        {% endfor %}
+
+                    </div>
+
+                    <div class="mt-4 d-flex justify-content-between">
+                        <a href="{% url 'employee_list' %}" class="btn btn-outline-secondary btn-pill">
+                            Cancel
+                        </a>
+                        <button type="submit" class="btn btn-primary btn-pill">
+                            Save Employee
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
