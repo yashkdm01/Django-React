@@ -1,0 +1,111 @@
+{% extends "base.html" %}
+{% block title %}Manager Dashboard{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h2 class="mb-0">Manager Dashboard</h2>
+  <a href="{% url 'task_create' %}" class="btn btn-primary">Create Task</a>
+</div>
+
+<div class="row mb-4">
+  <div class="col-md-8">
+    <form class="card card-minimal p-3" method="get">
+      <div class="row g-2 align-items-end">
+        <div class="col-md-4">
+          <label class="form-label">Employee</label>
+          <input type="text" name="employee" value="{{ filters.employee }}" class="form-control">
+        </div>
+        <div class="col-md-3">
+          <label class="form-label">Status</label>
+          <select name="status" class="form-select">
+            <option value="">All</option>
+            <option value="Pending" {% if filters.status == "Pending" %}selected{% endif %}>Pending</option>
+            <option value="In Progress" {% if filters.status == "In Progress" %}selected{% endif %}>In Progress</option>
+            <option value="Completed" {% if filters.status == "Completed" %}selected{% endif %}>Completed</option>
+          </select>
+        </div>
+        <div class="col-md-2">
+          <label class="form-label">From</label>
+          <input type="date" name="from" value="{{ filters.from }}" class="form-control">
+        </div>
+        <div class="col-md-2">
+          <label class="form-label">To</label>
+          <input type="date" name="to" value="{{ filters.to }}" class="form-control">
+        </div>
+        <div class="col-md-1 d-grid">
+          <button class="btn btn-dark mt-3" type="submit">Filter</button>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="col-md-4">
+    <div class="card card-minimal p-3">
+      <h6 class="text-muted mb-2">Task Statistics</h6>
+      <div class="d-flex justify-content-between">
+        <span>Completed</span>
+        <span class="badge bg-success badge-pill">{{ status_counts.Completed }}</span>
+      </div>
+      <div class="d-flex justify-content-between mt-1">
+        <span>In Progress</span>
+        <span class="badge bg-warning text-dark badge-pill">{{ status_counts.In_Progress }}</span>
+      </div>
+      <div class="d-flex justify-content-between mt-1">
+        <span>Pending</span>
+        <span class="badge bg-secondary badge-pill">{{ status_counts.Pending }}</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="card card-minimal">
+  <div class="card-body">
+    <h5 class="mb-3">Recent Tasks</h5>
+    <div class="table-responsive">
+      <table class="table align-middle">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Employee</th>
+            <th>Task Title</th>
+            <th>Priority</th>
+            <th>Status</th>
+            <th>Start Date</th>
+            <th>End Date</th>
+            <th>Assigned By</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+        {% for a in assignments %}
+          <tr>
+            <td>{{ forloop.counter }}</td>
+            <td>
+              <a href="{% url 'employee_dashboard' a.employee_name %}">
+                {{ a.employee_name }}
+              </a>
+            </td>
+            <td>{{ a.task.task_title }}</td>
+            <td>{{ a.task.task_priority }}</td>
+            <td>{{ a.status }}</td>
+            <td>{{ a.task.start_date }}</td>
+            <td>{{ a.task.end_date }}</td>
+            <td>{{ a.assigned_by }}</td>
+            <td>
+              <a href="{% url 'task_update' a.id %}" class="btn btn-outline-primary btn-sm">Edit</a>
+              <a href="{% url 'task_mark_completed' a.id %}" class="btn btn-success btn-sm">Mark Completed</a>
+              <a href="{% url 'task_delete' a.id %}" class="btn btn-outline-danger btn-sm">Delete</a>
+            </td>
+          </tr>
+        {% empty %}
+          <tr>
+            <td colspan="9" class="text-center text-muted">
+              No tasks found. Click "Create Task" to add the first task.
+            </td>
+          </tr>
+        {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock %}

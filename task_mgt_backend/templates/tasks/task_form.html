@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+<div class="card card-minimal mx-auto" style="max-width: 720px;">
+  <div class="card-body">
+    <h2 class="mb-3">{{ title }}</h2>
+
+    <form method="post">
+      {% csrf_token %}
+
+      {% if task_form.errors or assign_form.errors %}
+        <div class="alert alert-danger">
+          {{ task_form.errors }}
+          {{ assign_form.errors }}
+        </div>
+      {% endif %}
+
+      <h5 class="mt-2 mb-2">Task Details</h5>
+      <div class="mb-3">
+        {{ task_form.task_title.label_tag }} {{ task_form.task_title }}
+      </div>
+      <div class="mb-3">
+        {{ task_form.task_description.label_tag }} {{ task_form.task_description }}
+      </div>
+      <div class="row g-3 mb-3">
+        <div class="col-md-4">
+          {{ task_form.task_priority.label_tag }} {{ task_form.task_priority }}
+        </div>
+        <div class="col-md-4">
+          {{ task_form.start_date.label_tag }} {{ task_form.start_date }}
+        </div>
+        <div class="col-md-4">
+          {{ task_form.end_date.label_tag }} {{ task_form.end_date }}
+        </div>
+      </div>
+      <div class="mb-3">
+        {{ task_form.task_type.label_tag }} {{ task_form.task_type }}
+      </div>
+
+      <hr class="my-4">
+
+      <h5 class="mb-2">Assignment Details</h5>
+      <div class="mb-3">
+        {{ assign_form.employee_name.label_tag }} {{ assign_form.employee_name }}
+      </div>
+      <div class="mb-3">
+        {{ assign_form.assigned_by.label_tag }} {{ assign_form.assigned_by }}
+      </div>
+      <div class="mb-3">
+        {{ assign_form.status.label_tag }} {{ assign_form.status }}
+      </div>
+
+      <div class="d-flex justify-content-end gap-2 mt-3">
+        <a href="{% url 'manager_dashboard' %}" class="btn btn-outline-secondary">Cancel</a>
+        <button type="submit" class="btn btn-primary">Save Task</button>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}
