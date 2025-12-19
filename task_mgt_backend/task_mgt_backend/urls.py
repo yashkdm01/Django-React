@@ -5,6 +5,5 @@ from django.views.generic import RedirectView
 urlpatterns = [
     path("", RedirectView.as_view(pattern_name="manager_dashboard", permanent=False)),
     path("admin/", admin.site.urls),
-    path("tasks/", include("tasks.urls")),
+    path("tasks/", include("task_mgt_backend.tasks.urls")),
 ]
-
