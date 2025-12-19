@@ -1,0 +1,71 @@
+{% extends "leaves/base.html" %}
+{% block title %}My Leaves{% endblock %}
+{% block content %}
+<h2 class="mb-3">My Leave Dashboard</h2>
+
+<div class="d-flex justify-content-between mb-3">
+  <a class="btn btn-success" href="{% url 'leaves:apply_leave' %}">Apply Leave</a>
+  <a class="btn btn-outline-secondary" href="{% url 'leaves:manager_dashboard' %}">Manager View</a>
+</div>
+
+{# Show any messages (quota errors, success etc.) #}
+{% if messages %}
+  {% for message in messages %}
+    <div class="alert alert-{{ message.tags }} mb-3">
+      {{ message }}
+    </div>
+  {% endfor %}
+{% endif %}
+
+<div class="row mb-4">
+  {% if quotas %}
+    {% for q in quotas %}
+      <div class="col-md-4 mb-3">
+        <div class="card shadow-sm">
+          <div class="card-body text-center">
+            <h5 class="card-title">{{ q.get_leave_type_display }}</h5>
+            <p class="mb-1">Total: {{ q.total_quota }}</p>
+            <p class="mb-1 text-primary">Used: {{ q.used_quota }}</p>
+            <p class="mb-0 text-success">Remaining: {{ q.remaining_quota }}</p>
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+  {% else %}
+    <p>No quota defined yet.</p>
+  {% endif %}
+</div>
+
+<table class="table table-striped table-hover">
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Reason</th>
+      <th>From</th>
+      <th>To</th>
+      <th>Days</th>
+      <th>Status</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+  {% for l in leaves %}
+    <tr>
+      <td>{{ l.get_leave_type_display }}</td>
+      <td>{{ l.reason }}</td>
+      <td>{{ l.start_date }}</td>
+      <td>{{ l.end_date }}</td>
+      <td>{{ l.total_days }}</td>
+      <td>{{ l.status|title }}</td>
+      <td>
+        {% if l.status == "pending" %}
+          <a href="{% url 'leaves:update_leave' l.pk %}" class="btn btn-sm btn-outline-primary">Edit</a>
+        {% endif %}
+      </td>
+    </tr>
+  {% empty %}
+    <tr><td colspan="7">No leaves yet.</td></tr>
+  {% endfor %}
+  </tbody>
+</table>
+{% endblock %}
