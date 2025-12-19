@@ -51,7 +51,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'task_mgt_backend.urls'
+ROOT_URLCONF = "task_mgt_backend.task_mgt_backend.urls"
 
 TEMPLATES = [
     {
@@ -68,7 +68,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'task_mgt_backend.wsgi.application'
+WSGI_APPLICATION = 'task_mgt_backend.task_mgt_backend.wsgi.application'
 
 
 # Database
