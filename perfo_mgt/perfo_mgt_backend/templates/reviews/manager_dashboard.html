@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="card">
+  <h1>Manager / TL Dashboard</h1>
+  <p class="muted">
+    View all performance reviews, filter by period and rating, and quickly jump to edit or delete actions.
+  </p>
+
+  <form method="get" class="filters">
+    <div>
+      <label>Review period</label>
+      <select name="period" onchange="this.form.submit()">
+        <option value="">All</option>
+        <option value="Monthly" {% if period == "Monthly" %}selected{% endif %}>Monthly</option>
+        <option value="Quarterly" {% if period == "Quarterly" %}selected{% endif %}>Quarterly</option>
+        <option value="Annual" {% if period == "Annual" %}selected{% endif %}>Annual</option>
+      </select>
+    </div>
+    <div>
+      <label>Rating range</label>
+      <select name="rating" onchange="this.form.submit()">
+        <option value="">All</option>
+        <option value="1-4" {% if rating_filter == "1-4" %}selected{% endif %}>Between 1–4</option>
+        <option value="5-8" {% if rating_filter == "5-8" %}selected{% endif %}>Between 5–8</option>
+        <option value="9-10" {% if rating_filter == "9-10" %}selected{% endif %}>Above 8</option>
+      </select>
+    </div>
+    <div style="align-self:flex-end;">
+      <a href="{% url 'add_review' %}" class="btn btn-primary">+ Add Review</a>
+    </div>
+  </form>
+
+  <table>
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Employee</th>
+        <th>Review Title</th>
+        <th>Date</th>
+        <th>Period</th>
+        <th>Rating</th>
+        <th>Comments</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for r in reviews %}
+      <tr>
+        <td>{{ forloop.counter }}</td>
+        <td>#{{ r.employee_id }}</td>
+        <td>{{ r.review_title }}</td>
+        <td>{{ r.review_date }}</td>
+        <td><span class="pill pill-blue">{{ r.review_period }}</span></td>
+        <td>
+          {% if r.rating >= 9 %}
+            <span class="pill pill-green">{{ r.rating }}</span>
+          {% elif r.rating >= 5 %}
+            <span class="pill pill-amber">{{ r.rating }}</span>
+          {% else %}
+            <span class="pill" style="background:#4b5563;">{{ r.rating }}</span>
+          {% endif %}
+        </td>
+        <td>
+          {% if r.comments %}<a href="#" title="{{ r.comments }}">See</a>{% else %}-{% endif %}
+        </td>
+        <td>
+          <a href="{% url 'employee_dashboard' r.employee_id %}" class="btn btn-ghost" style="margin-right:.25rem;">Employee</a>
+          <a href="{% url 'edit_review' r.pk %}" class="btn btn-ghost" style="margin-right:.25rem;">Edit</a>
+          <a href="{% url 'delete_review' r.pk %}" class="btn btn-danger">Delete</a>
+        </td>
+      </tr>
+      {% empty %}
+      <tr><td colspan="8" class="muted">No reviews yet.</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

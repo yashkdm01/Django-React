@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="card">
+  <h1>Edit Review</h1>
+  <p class="muted">Update review details and save the changes.</p>
+
+  <form method="post" style="margin-top:1rem;">
+    {% csrf_token %}
+    <div class="form-row">
+      <div>
+        <label>Review title</label>
+        <input type="text" name="review_title" value="{{ review.review_title }}" required>
+      </div>
+      <div>
+        <label>Employee ID</label>
+        <input type="number" name="employee_id" value="{{ review.employee_id }}" required>
+      </div>
+      <div>
+        <label>Reviewed by (ID)</label>
+        <input type="number" name="reviewed_by" value="{{ review.reviewed_by }}" required>
+      </div>
+      <div>
+        <label>Review date</label>
+        <input type="date" name="review_date" value="{{ review.review_date|date:'Y-m-d' }}" required>
+      </div>
+      <div>
+        <label>Review period</label>
+        <select name="review_period" required>
+          <option value="Monthly" {% if review.review_period == "Monthly" %}selected{% endif %}>Monthly</option>
+          <option value="Quarterly" {% if review.review_period == "Quarterly" %}selected{% endif %}>Quarterly</option>
+          <option value="Annual" {% if review.review_period == "Annual" %}selected{% endif %}>Annual</option>
+        </select>
+      </div>
+      <div>
+        <label>Rating (1–10)</label>
+        <input type="number" name="rating" min="1" max="10" value="{{ review.rating }}" required>
+      </div>
+    </div>
+
+    <div style="margin-top:.75rem;">
+      <label>Review comments</label>
+      <textarea name="comments">{{ review.comments }}</textarea>
+    </div>
+
+    <div style="margin-top:1rem;">
+      <button type="submit" class="btn btn-primary">Save Changes</button>
+      <a href="{% url 'manager_dashboard' %}" class="btn btn-ghost">Cancel</a>
+    </div>
+  </form>
+</div>
+{% endblock %}

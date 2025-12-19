@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="card">
+  <h1>Add Review</h1>
+  <p class="muted">Fill in the details to add a new performance review for an employee.</p>
+
+  <form method="post" style="margin-top:1rem;">
+    {% csrf_token %}
+    <div class="form-row">
+      <div>
+        <label>Review title</label>
+        <input type="text" name="review_title" required>
+      </div>
+      <div>
+        <label>Employee ID</label>
+        <input type="number" name="employee_id" required>
+      </div>
+      <div>
+        <label>Reviewed by (ID)</label>
+        <input type="number" name="reviewed_by" required>
+      </div>
+      <div>
+        <label>Review date</label>
+        <input type="date" name="review_date" required>
+      </div>
+      <div>
+        <label>Review period</label>
+        <select name="review_period" required>
+          <option value="">Select</option>
+          <option value="Monthly">Monthly</option>
+          <option value="Quarterly">Quarterly</option>
+          <option value="Annual">Annual</option>
+        </select>
+      </div>
+      <div>
+        <label>Rating (1–10)</label>
+        <input type="number" name="rating" min="1" max="10" required>
+      </div>
+    </div>
+
+    <div style="margin-top:.75rem;">
+      <label>Review comments</label>
+      <textarea name="comments" placeholder="Optional comments about the performance..."></textarea>
+    </div>
+
+    <div style="margin-top:1rem;">
+      <button type="submit" class="btn btn-primary">Add Review</button>
+      <a href="{% url 'manager_dashboard' %}" class="btn btn-ghost">Cancel</a>
+    </div>
+  </form>
+</div>
+{% endblock %}

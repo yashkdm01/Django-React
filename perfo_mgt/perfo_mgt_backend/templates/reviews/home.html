@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="card">
+  <h1>Introduction</h1>
+  <p class="muted" style="margin-top:.5rem;">
+    Review management systems allow organizations to conduct periodic reviews over task allocation to employees
+    and provide ratings that help track work efficiency. Performance review reports support decisions about which
+    departments or employees are performing better and where training is required.
+  </p>
+</div>
+
+<div class="card">
+  <h2>How to use this module</h2>
+  <p class="muted">
+    Use the Manager Dashboard to add, edit, delete and analyse performance reviews for employees. Employees can
+    use their dashboard view to see only their own reviews.
+  </p>
+  <div style="margin-top:1rem;">
+    <a href="{% url 'manager_dashboard' %}" class="btn btn-primary">Go to Manager Dashboard</a>
+  </div>
+</div>
+{% endblock %}
